@@ -1,11 +1,59 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, {useState} from 'react';
+import { StyleSheet, Text, View,  Alert,Button, TextInput } from 'react-native';
+import { Person } from './src/modules/Person';
+import PersonService from './src/services/PersonService';
+import DatabaseInit from './src/database/db_init';
 
 export default function App() {
+  const [name, setName] = useState('');
+  const [people, setPeople] = useState<Person[]>([])
+  //let people: Array<Person> = [];
+  //const db_init = new DatabaseInit();
+
+  
+
+  const insertPerson = (param: string) =>{
+      let person = new Person();
+      person.name = param;
+      PersonService.addData(person);
+      setName('');
+      Alert.alert("Cadastro Realizado!");
+      setPeople(PersonService.findAll());
+      console.log("PESSOAS LISTA FRONT: "+people);
+      
+      console.log(person);
+  }
+
+  const findAll= () =>{
+     setPeople(PersonService.findAll());
+     console.log("LISTA DE PESSOAS: "+people);
+     //return people;
+     
+  }
+
+  const sayHelloTo = ()=>{
+    Alert.alert("NOME DEVE SER PREENCHIDO!");
+  }
+
+  const peopleList = people.map((person, key)=>{
+    return(
+      <>
+        <Text key={person.id}>id: {person.id} nome: {person.name}</Text>
+      </>
+     )
+  })
+
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
+      <Text>CADASTRO</Text>
+      <TextInput  placeholder="Nome: " value={name} onChangeText={(text)=>setName(text)}/> 
+      <Button title="CADASTRAR" onPress={() => name == "" ? sayHelloTo() : insertPerson(name)}/>
+      
+      
       <StatusBar style="auto" />
+      {peopleList}
     </View>
   );
 }
