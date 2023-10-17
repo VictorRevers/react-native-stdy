@@ -4,6 +4,7 @@ import { StyleSheet, Text, View,  Alert,Button, TextInput } from 'react-native';
 import { Person } from './src/modules/Person';
 import PersonService from './src/services/PersonService';
 import DatabaseInit from './src/database/db_init';
+import * as ImagePicker from 'expo-image-picker';
 
 export default function App() {
   const [name, setName] = useState('');
@@ -11,6 +12,18 @@ export default function App() {
   //let people: Array<Person> = [];
   //const db_init = new DatabaseInit();
 
+  const pickImageAsync = async () =>{
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      quality: 1,
+    });
+
+    if(!result.canceled){
+      console.log(result);
+    }else{
+      alert("Nenhuma imagem selecionada!");
+    }
+  }
   
 
   const insertPerson = (param: string) =>{
@@ -59,6 +72,7 @@ export default function App() {
       <Button title="CADASTRAR" onPress={() => name == "" ? sayHelloTo() : insertPerson(name)}/>
       <Button title="DIRETÓRIO" onPress={createDir}/>
       <Button title="BUSCAR DIRETÓRIO" onPress={getDir}/>
+      <Button title="Upload de Foto" onPress={pickImageAsync} />
       
       
       <StatusBar style="auto" />
