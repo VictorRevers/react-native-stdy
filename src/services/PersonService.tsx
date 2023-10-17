@@ -1,11 +1,13 @@
 import { Person } from "../modules/Person";
 import { DatabaseConnection } from "../database/db_connection";
 import { SQLError } from "expo-sqlite";
+import * as fs from 'expo-file-system';
 
 const table = 'person';
 const db = DatabaseConnection.getConnection();
 var people:Array<Person> = [];
 var id = 0;
+var path:string = "";
 
 
 export default class PersonService{
@@ -64,5 +66,29 @@ export default class PersonService{
         }))
         
         return people; 
+    }
+
+    static createDir(name:String){
+        path = `${fs.documentDirectory}${name}`
+        new Promise((resolve , reject)=> fs.makeDirectoryAsync(path).then((inf)=>{
+            console.log("Diretório criado com sucesso: "+inf);
+        }).catch((err)=>{
+            
+
+            console.log("Erro ao criar diretórito de imagem! "+err);
+        }));     
+    }
+
+    static getDir(name:string){
+        path = `${fs.documentDirectory}${name}`;
+
+        new Promise((resolve , reject)=> fs.readDirectoryAsync(path).then((inf)=>{
+            resolve(inf);
+            console.log("Informação do diretório: "+inf);
+        }).catch((err)=>{
+            
+
+            console.log("Erro ao buscar diretórito de imagem! "+err);
+        })); 
     }
 }

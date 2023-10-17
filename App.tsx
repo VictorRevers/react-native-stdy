@@ -25,6 +25,13 @@ export default function App() {
       console.log(person);
   }
 
+  const createDir = () =>{
+    PersonService.createDir("Turma903");
+  }
+
+  const getDir = () =>{
+    PersonService.getDir("teste");
+  }
   const findAll= () =>{
      setPeople(PersonService.findAll());
      console.log("LISTA DE PESSOAS: "+people);
@@ -50,6 +57,8 @@ export default function App() {
       <Text>CADASTRO</Text>
       <TextInput  placeholder="Nome: " value={name} onChangeText={(text)=>setName(text)}/> 
       <Button title="CADASTRAR" onPress={() => name == "" ? sayHelloTo() : insertPerson(name)}/>
+      <Button title="DIRETÓRIO" onPress={createDir}/>
+      <Button title="BUSCAR DIRETÓRIO" onPress={getDir}/>
       
       
       <StatusBar style="auto" />
