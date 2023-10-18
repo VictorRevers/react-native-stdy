@@ -91,4 +91,8 @@ export default class PersonService{
             console.log("Erro ao buscar diretórito de imagem! "+err);
         })); 
     }
+
+    static uploadPic(){
+        
+    }
 }

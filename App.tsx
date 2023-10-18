@@ -6,9 +6,11 @@ import PersonService from './src/services/PersonService';
 import DatabaseInit from './src/database/db_init';
 import * as ImagePicker from 'expo-image-picker';
 
+
 export default function App() {
   const [name, setName] = useState('');
   const [people, setPeople] = useState<Person[]>([])
+  const [selectedImage, setSelectedImage] = useState('');
   //let people: Array<Person> = [];
   //const db_init = new DatabaseInit();
 
@@ -19,7 +21,8 @@ export default function App() {
     });
 
     if(!result.canceled){
-      console.log(result);
+      setSelectedImage(result.assets[0].uri);
+      console.log(result.assets[0].uri);
     }else{
       alert("Nenhuma imagem selecionada!");
     }
@@ -71,8 +74,9 @@ export default function App() {
       <TextInput  placeholder="Nome: " value={name} onChangeText={(text)=>setName(text)}/> 
       <Button title="CADASTRAR" onPress={() => name == "" ? sayHelloTo() : insertPerson(name)}/>
       <Button title="DIRETÓRIO" onPress={createDir}/>
-      <Button title="BUSCAR DIRETÓRIO" onPress={getDir}/>
+      <Button title="BUSCAR DIRETÓRIO" onPress={getDir}/>          
       <Button title="Upload de Foto" onPress={pickImageAsync} />
+    
       
       
       <StatusBar style="auto" />
