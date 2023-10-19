@@ -68,39 +68,46 @@ export default class PersonService{
         return people; 
     }
 
-    static createDir(name:String){
-        path = `${fs.documentDirectory}${name}`
-        new Promise((resolve , reject)=> fs.makeDirectoryAsync(path).then((inf)=>{
-            console.log("Diretório criado com sucesso: "+inf);
-        }).catch((err)=>{
-            
+    static createDir = async(name:String)=>{
+        path = `${fs.documentDirectory}images/${name}`;
 
-            console.log("Erro ao criar diretórito de imagem! "+err);
-        }));     
+        await fs.makeDirectoryAsync(path, {}).then(()=>{
+            console.log("DIRETÓRITO CRIADO COM SUCESSO!");
+        }).catch((err)=>{
+            console.log("ERRO AO CRIAR DIRETÓRIO: "+err);
+        });       
     }
 
-    static getDir(name:string){
-        path = `${fs.documentDirectory}${name}`;
+    static getDir = async(name:string)=>{
+        path = `${fs.documentDirectory}images/${name}/foto.jpg`;
+        console.log("Path: "+path);
+        return path;
+        /*let dirContent:any;
+        try{
+            dirContent = await fs.getInfoAsync(path);
+        }catch(err){
+            console.log("Erro ao buscar diretório!");
+        }
 
-        new Promise((resolve , reject)=> fs.readDirectoryAsync(path).then((inf)=>{
-            resolve(inf);
-            console.log("Informação do diretório: "+inf);
-        }).catch((err)=>{
-            
+        console.log("DIRETÓRIO: "+dirContent);*/
+        
 
-            console.log("Erro ao buscar diretórito de imagem! "+err);
-        })); 
+       
     }
 
-    static uploadPic(from:string, to:string){
-       new Promise(()=>fs.copyAsync({
+    static uploadPic = async(from:string, to:string, imageName:string)=>{
+        
+
+       await fs.copyAsync({
         from: from,
-        to: to
-    }).then(()=>{
-        console.log("Upload concluido!");
-    }).catch((err)=>{
-        console.log("Erro ao inserir imagem! "+err);     
-    })); 
+        to: `${fs.documentDirectory}images/${to}/${imageName}.jpg`
+       }).then(()=>{
+        console.log("Upload concluido");
+       }).catch((err)=>{
+        console.log("Erro ao carregar imagem: "+err);
+       })
+
+       
         
     }
 }

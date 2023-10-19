@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
-import React, {useState} from 'react';
-import { StyleSheet, Text, View,  Alert,Button, TextInput } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import { StyleSheet, Text, View,  Alert,Button, TextInput, Image } from 'react-native';
 import { Person } from './src/modules/Person';
 import PersonService from './src/services/PersonService';
 import DatabaseInit from './src/database/db_init';
@@ -11,6 +11,7 @@ export default function App() {
   const [name, setName] = useState('');
   const [people, setPeople] = useState<Person[]>([])
   const [selectedImage, setSelectedImage] = useState('');
+  const [image, setImage] = useState('');
   //let people: Array<Person> = [];
   //const db_init = new DatabaseInit();
 
@@ -22,7 +23,8 @@ export default function App() {
 
     if(!result.canceled){
       setSelectedImage(result.assets[0].uri);
-      console.log(result.assets[0].uri);
+      PersonService.uploadPic(result.assets[0].uri, "turma904","foto");
+      //console.log(result.assets[0].uri);
     }else{
       alert("Nenhuma imagem selecionada!");
     }
@@ -42,11 +44,11 @@ export default function App() {
   }
 
   const createDir = () =>{
-    PersonService.createDir("Turma903");
+    PersonService.createDir("Turma904");
   }
 
   const getDir = () =>{
-    PersonService.getDir("teste");
+    PersonService.getDir("Turma904");
   }
   const findAll= () =>{
      setPeople(PersonService.findAll());
@@ -59,6 +61,21 @@ export default function App() {
     Alert.alert("NOME DEVE SER PREENCHIDO!");
   }
 
+  useEffect(()=>{
+    const setImageDir = async()=>{
+      try{
+        setImage(await PersonService.getDir("Turma904"));
+        console.log("image: "+image);
+      }catch(err){
+        console.log("ERRO AO SETAR CAMINHO DA IMAGEM!");
+      }
+    }
+    
+    setImageDir();
+
+
+  })
+
   const peopleList = people.map((person, key)=>{
     return(
       <>
@@ -67,6 +84,9 @@ export default function App() {
      )
   })
 
+  
+    
+  
 
   return (
     <View style={styles.container}>
@@ -76,8 +96,10 @@ export default function App() {
       <Button title="DIRETÓRIO" onPress={createDir}/>
       <Button title="BUSCAR DIRETÓRIO" onPress={getDir}/>          
       <Button title="Upload de Foto" onPress={pickImageAsync} />
+      
     
       
+      <Image source={{uri: "file:///data/user/0/host.exp.exponent/files/images/Turma904/foto.jpg"}} style={styles.image}/>
       
       <StatusBar style="auto" />
       {peopleList}
@@ -91,5 +113,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  image: {
+    width: 200,
+    height: 200,
   },
 });
