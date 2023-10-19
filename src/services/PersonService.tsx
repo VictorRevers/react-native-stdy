@@ -92,7 +92,15 @@ export default class PersonService{
         })); 
     }
 
-    static uploadPic(){
+    static uploadPic(from:string, to:string){
+       new Promise(()=>fs.copyAsync({
+        from: from,
+        to: to
+    }).then(()=>{
+        console.log("Upload concluido!");
+    }).catch((err)=>{
+        console.log("Erro ao inserir imagem! "+err);     
+    })); 
         
     }
 }
