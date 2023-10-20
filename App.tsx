@@ -25,7 +25,7 @@ export default function App() {
       //setSelectedImage(result.assets[0].uri);
       PersonService.uploadPic(result.assets[0].uri, "turma904","foto");
       
-      setSelectedImage(PersonService.getDir("turma904"));
+      
       console.log("CAMINHO ORIGINAL DA IMAGEM: "+result.assets[0].uri);
     }else{
       alert("Nenhuma imagem selecionada!");
@@ -50,7 +50,7 @@ export default function App() {
   }
 
   const getDir = () =>{
-    PersonService.getDir("Turma904");
+    setSelectedImage(PersonService.getDir("turma904"));
   }
   const findAll= () =>{
      setPeople(PersonService.findAll());
