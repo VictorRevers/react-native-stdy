@@ -78,7 +78,7 @@ export default class PersonService{
         });       
     }
 
-    static getDir = async(name:string)=>{
+    static getDir = (name:string)=>{
         path = `${fs.documentDirectory}images/${name}/foto.jpg`;
         console.log("Path: "+path);
         return path;
@@ -101,10 +101,12 @@ export default class PersonService{
        await fs.copyAsync({
         from: from,
         to: `${fs.documentDirectory}images/${to}/${imageName}.jpg`
-       }).then(()=>{
+       }).then(()=>{    
         console.log("Upload concluido");
+        return to;
        }).catch((err)=>{
         console.log("Erro ao carregar imagem: "+err);
+        return '';
        })
 
        

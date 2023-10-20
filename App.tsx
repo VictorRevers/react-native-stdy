@@ -22,9 +22,11 @@ export default function App() {
     });
 
     if(!result.canceled){
-      setSelectedImage(result.assets[0].uri);
+      //setSelectedImage(result.assets[0].uri);
       PersonService.uploadPic(result.assets[0].uri, "turma904","foto");
-      //console.log(result.assets[0].uri);
+      
+      setSelectedImage(PersonService.getDir("turma904"));
+      console.log("CAMINHO ORIGINAL DA IMAGEM: "+result.assets[0].uri);
     }else{
       alert("Nenhuma imagem selecionada!");
     }
@@ -99,7 +101,7 @@ export default function App() {
       
     
       
-      <Image source={{uri: "file:///data/user/0/host.exp.exponent/files/images/Turma904/foto.jpg"}} style={styles.image}/>
+      <Image source={{uri: selectedImage}} style={styles.image}/>
       
       <StatusBar style="auto" />
       {peopleList}
